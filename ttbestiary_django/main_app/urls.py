@@ -14,4 +14,6 @@ urlpatterns = [
     # path('profile/characters/<int:pk>', views.Character.as_view(), name="char_detail"),
     # path('profile/characters/<int:pk>/edit', views.CharacterUpdate.as_view(), name="char_edit"),
     # path('profile/characters/<int:pk>/delete', views.CharacterDelete.as_view(), name="char_delete"),
+    path('accounts/signup/', views.Signup.as_view(), name='signup'),
+    
 ]
