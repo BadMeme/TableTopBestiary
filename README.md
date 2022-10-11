@@ -13,16 +13,16 @@ The app will also provide tools that track their character’s resources,
 	and provide a dice rolling function, and a turn order tracker. 
 
 The MVP Goal is an app that allows a user to:
-	- Create:
+	Create:
 		- A Character from scratch according to the D&D 5e rules
 		- A Campaign to store collections of Characters (+ misc. functions)
-	- Read:
+	Read:
 		- Allow user to navigate their Characters and Campaigns
 		- Allow user to utilize tool functionality related to various statistics and abilities tied to a           Character or Campaign model (ie: dice rolls, resource tracking, etc)
-	- Update:
+	Update:
 		- a Character’s details (new items, abilities, spells, level ups, etc.)
 		- a Campaign’s details (Which/how many Character sheets, manage note files or other objects               created within the Campaign)
-	- Destroy:
+	Destroy:
 		- A character sheet (and remove it from any associated Campaigns)
 		- A campaign (While leaving its associated Character Sheets in tact if specified)
 
@@ -30,8 +30,8 @@ Stretch goals would allow users to sync up into a single campaign owned by one o
   additionall functionality and ease of use to someone running a game. Real time feedback on the results   of dice rolls or logging abilities used, player turn order, etc. is the final goal of the app.
   
 Tech Stack:
-   The core of the app will be built out through Django using MongoDB to store and render user data.
-   Time permitting, React will be used on the front end for the flexibile and dynamic rendering of            changing game states. 
+  The core of the app will be built out through Django using MongoDB to store and render user data.
+  Time permitting, React will be used on the front end for the flexibile and dynamic rendering of changing game states. 
 
 Entity Relationships (WIP):
   User (1-Many with Characters, Campaigns)
