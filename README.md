@@ -50,6 +50,7 @@ Tech Stack:
 Entity Relationships (WIP):
 
 https://app.diagrams.net/?libs=general;er#G1eqw_AbffS2Km2eyorWpHAohzjdsJ8pyi
+![ERD drawio](https://user-images.githubusercontent.com/40964607/195181321-fd881eaa-460b-4cf1-bdf8-f7ccad01791b.png)
 
   User (1-Many with Characters, Campaigns)
     -Username
