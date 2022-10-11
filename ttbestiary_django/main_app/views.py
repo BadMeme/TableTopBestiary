@@ -125,9 +125,9 @@ class Signup(View):
             context = {'form': form}
             return render(request, 'registration/signup.html', context)
 
-class Login(View):
-    def get(self, request):
-        return HttpResponse('Login Page. Creates and/or Logs in to user. Redirects to user profile')
+# class Login(View):
+#     def get(self, request):
+#         return HttpResponse('Login Page. Creates and/or Logs in to user. Redirects to user profile')
 
 class About(View):
     def get(self, request):
