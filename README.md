@@ -3,6 +3,11 @@ A DnD player companion app used to store and track character information and rul
 
 User stories:
 
+https://app.diagrams.net/#G1o71TrcMqF7ehh1FcZUV4xnRN9GnT2qC2
+
+![userstories](https://user-images.githubusercontent.com/40964607/195164487-b8d36883-52ea-477d-aca7-cda88133ca47.jpg)
+
+
 The purpose of the app is to provide a tool for players of Dungeons and Dragons that keeps track of D&D game information for the user. On top of this, it aims to provide tools for playing and running the game, either from a player or DM’s perspective.
 
 The main points of interface will be:
@@ -43,6 +48,9 @@ Tech Stack:
   Time permitting, React will be used on the front end for the flexibile and dynamic rendering of changing game states. 
 
 Entity Relationships (WIP):
+
+https://app.diagrams.net/?libs=general;er#G1eqw_AbffS2Km2eyorWpHAohzjdsJ8pyi
+
   User (1-Many with Characters, Campaigns)
     -Username
     -Password
