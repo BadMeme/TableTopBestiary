@@ -5,9 +5,18 @@ User stories:
 
 The purpose of the app is to provide a tool for players of Dungeons and Dragons that keeps track of D&D game information for the user. On top of this, it aims to provide tools for playing and running the game, either from a player or DM’s perspective.
 
+The main points of interface will be:
+	-Login/Signup: (will redirect to the user's index)
+	-User Index: (Will show lists of the user's Campaigns and Characters, all of which link to their individual show pages. Will also link to Character and Campaign create routes)
+	-Character Creation: Renders a character creation input sequence that will create a Character in the database by matching up user inputs with reference tables according to their choices.
+	-Campaign Creation: Renders a Campaign creation input form that will create a Campaign in the database 
+	-Character Sheet View: Renders all of a single Character's game stats, as well as clickable tools for common game actions. (Links back to User Index, contains edit functionality to alter the details of the character sheet in the DB)
+	-Character Sheet Edit: Renders editable character sheet fields for custom inputs 
+	-Campaign View: 
+
 The app will store the user’s Characters, and Campaigns:
-	A Character can be created by the user directly in the app, which will save and store that character’s     information (Class, Race, Stats, Level, etc.) to a character sheet tied to the user. 
-	A Campaign is a collection of Character sheets, along with other useful resources created and             managed by the user, that allow the user to track the events of an ongoing game campaign they are 			participating in or running. 
+	A Character can be created by the user directly in the app, which will save and store that character’s information (Class, Race, Stats, Level, etc.) to a character sheet tied to the user. 
+	A Campaign is a collection of Character sheets, along with other useful resources created and managed by the user, that allow the user to track the events of an ongoing game campaign they are participating in or running. 
 
 The app will also provide tools that track their character’s resources, 
 	and provide a dice rolling function, and a turn order tracker. 
