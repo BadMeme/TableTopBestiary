@@ -13,7 +13,7 @@ class ProtoChar(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     #
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default =1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default =1)
 
     def __str__(self): 
         return self.name
@@ -34,7 +34,8 @@ class ProtoSheet(models.Model):
     #these will be possibly be models.ForeignKeys
     race_code = models.CharField(max_length=3) 
     class_code = models.CharField(max_length=3)
-    subclass_code = models.Charfield(max_length=3)
+    subclass_code = models.CharField(max_length=3)
+    char = models.ForeignKey(ProtoChar, on_delete=models.CASCADE, default =1)
     #models.ForeignKey
     # stats_chart = models.Charfield(max_length=100)
     # skill_chart = models.Charfield(max_length=100)
@@ -43,14 +44,14 @@ class ProtoSheet(models.Model):
 
 
 class ProtoCamp(models.Model):
-    name = models.Charfield(max_length=100)
-    description = models.Charfield(max_length=500)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
 
     #
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self): 
         return self.name
     
     class Meta:
-        ordering = ['created_at']
+        ordering = ['name']

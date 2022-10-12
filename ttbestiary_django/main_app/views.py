@@ -40,6 +40,7 @@ class TestChar :
         self.stats = stats
         self.hd = class_1['hd']
         self.saves = class_1['saves']
+        self.id = class_1['id']
 
 testClasses = [
     {
@@ -54,6 +55,7 @@ testClasses = [
             'wis' : False,
             'cha' : False
         },
+        'id' : 1
     },
     {
         'name' : 'Cleric',
@@ -67,6 +69,7 @@ testClasses = [
             'wis' : True,
             'cha' : True
         },
+        'id' : 2
     },
     {
         'name' : 'Wizard',
@@ -80,6 +83,7 @@ testClasses = [
             'wis' : True,
             'cha' : False
         },
+        'id' : 3
     },
     {
         'name' : 'Rogue',
@@ -93,6 +97,7 @@ testClasses = [
             'wis' : False,
             'cha' : False
         },
+        'id' : 4
     }
 ]
 
@@ -101,6 +106,15 @@ samples = [
     TestChar('Stink', testClasses[1]),
     TestChar('Gandalf 2', testClasses[2]),
     TestChar('Edge', testClasses[3])
+]
+
+class TestCamp:
+    def __init__ (self, name, desc):
+        self.name = name,
+        self.desc = desc
+testcampaigns = [
+    TestCamp('Test', 'My first adventure lol'),
+    TestCamp('Lost Mines of Phandelver', 'Running an intro module')
 ]
 
 # ----- End Test Models
@@ -116,11 +130,11 @@ class Signup(View):
         return render(request, 'registration/signup.html', context)
     
     def post(self, request):
-        form = UserCreationForm(request.Post)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('/')
+            return redirect('profile') #this doesnt seem to work
         else:
             context = {'form': form}
             return render(request, 'registration/signup.html', context)
@@ -136,6 +150,14 @@ class About(View):
 # class Character(View):
 #     def get(self, request):
 #         return HttpResponse('Character View Page. Update button links to edit function. Delete button to remove from db. Links back to user profile and to related campaigns.')
+class Profile(TemplateView):
+    template_name = 'profile.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['chars'] = samples
+        context['camps'] = testcampaigns
+        return context
+
 
 class Character(TemplateView):
     template_name = 'test.html'

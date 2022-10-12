@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} User Profile {% endblock %}
+{% block content %}
+    <div class="char-wrapper">
+        {% for char in chars %}
+        <a href='/profile/characters/{{char.id}}'>
+            <div class="card">
+                Testing: {{ char.name }}
+                Code: {{ char.class_code }}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="button-wrapper">
+        <div class='create-button'>
+            <a href='/profile/campaigns/new'>
+                Placeholder for character create button
+            </a>
+        </div>
+        <div class='create-button'>
+            <a href='/profile/campaigns/new'>
+                Placeholder for campaign create button
+            </a>
+        </div>
+    </div>
+
+    <div class='camp-wrapper'></div>
+{% endblock %}
