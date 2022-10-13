@@ -1,5 +1,5 @@
 body {
-    background-color: #1e1a2482;
+    background-color: #1e122fba;
     color: #ffffff;
     min-height: 100vh;
 }
@@ -32,4 +32,11 @@ h3 {
 
 p {
     font-size: 12px;
+}
+
+.anchor-bar {
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
