@@ -1,7 +1,17 @@
+# from socketserver import _RequestType
+# from xml.sax.handler import property_declaration_handler
+
+from django import forms
 from django.shortcuts import render
+from django.forms import ModelForm
 from django.views import View #
+from django.views.generic import DetailView
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponse 
+
+#models
+from .models import ProtoChar, ProtoSheet, ProtoCamp
 
 #login/register
 from django.contrib.auth import login
@@ -17,111 +27,39 @@ from django.utils.decorators import method_decorator
 
 # ----- Test Models
 
-# class TestUser : 
-
-std_arr = {
-    'str' : 15,
-    'dex' : 14,
-    'con' : 13,
-    'int' : 12,
-    'wis' : 10,
-    'cha' : 8
-}
-    
-class TestChar :
-    def __init__ (self, name, class_1, stats=std_arr, level=1, player=True, usercode='0'):
-        
-        self.name = name 
-        self.user = usercode 
-        self.class_1 = class_1['name']
-        self.class_code = class_1['code']
-        self.level = level
-        self.player = player
-        self.stats = stats
-        self.hd = class_1['hd']
-        self.saves = class_1['saves']
-        self.id = class_1['id']
-
-testClasses = [
-    {
-        'name' : 'Fighter',
-        'code' : 'FIG',
-        'hd' : 10,
-        'saves' : {
-            'str' : True,
-            'dex' : False,
-            'con' : True,
-            'int' : False,
-            'wis' : False,
-            'cha' : False
-        },
-        'id' : 1
-    },
-    {
-        'name' : 'Cleric',
-        'code' : 'CLE',
-        'hd' : 8,
-        'saves' : {
-            'str' : False,
-            'dex' : False,
-            'con' : False,
-            'int' : False,
-            'wis' : True,
-            'cha' : True
-        },
-        'id' : 2
-    },
-    {
-        'name' : 'Wizard',
-        'code' : 'WIZ',
-        'hd' : 6,
-        'saves' : {
-            'str' : False,
-            'dex' : False,
-            'con' : False,
-            'int' : True,
-            'wis' : True,
-            'cha' : False
-        },
-        'id' : 3
-    },
-    {
-        'name' : 'Rogue',
-        'code' : 'ROG',
-        'hd' : 8,
-        'saves' : {
-            'str' : False,
-            'dex' : True,
-            'con' : False,
-            'int' : True,
-            'wis' : False,
-            'cha' : False
-        },
-        'id' : 4
-    }
-]
-
-samples = [
-    TestChar('Dave', testClasses[0]),
-    TestChar('Stink', testClasses[1]),
-    TestChar('Gandalf 2', testClasses[2]),
-    TestChar('Edge', testClasses[3])
-]
-
-class TestCamp:
-    def __init__ (self, name, desc):
-        self.name = name,
-        self.desc = desc
-testcampaigns = [
-    TestCamp('Test', 'My first adventure lol'),
-    TestCamp('Lost Mines of Phandelver', 'Running an intro module')
-]
 
 # ----- End Test Models
 
-class Home(View):
-    def get(self, request):
-        return HttpResponse('Home page. Links to: Login/Signup')
+# ----- Forms
+
+
+class SheetInput(forms.Form):
+    #fields = ['level', 'race_code', 'class_code', 'subclass_code']
+    level = forms.NumberInput
+    race_code = forms.MultipleChoiceField
+    class_code = forms.MultipleChoiceField
+    subcloass_code = forms.MultipleChoiceField
+
+class SheetForm(ModelForm):
+    class Meta:
+        model = ProtoSheet
+        fields = ['protochar', 'level', 'race_code', 'class_code', 'subclass_code']
+    
+        # def __init__(self, *args, **kwargs):
+        #     super(SheetForm, self).__init__(*args, **kwargs)
+        #     self.fields['protochar'].disabled = True
+        # exclude = ['protochar']
+        # level = forms.CharField (label='level', max_length=2)
+        # race_code = forms.CharField (label='race_code', max_length=3)
+        # class_code = forms.CharField (label='class_code', max_length=3)
+        # subclass_code = forms.CharField (label='subclass_code', max_length=3)
+        # # !need place for foreign key probably 
+
+
+# -----
+
+class Home(TemplateView):
+    template_name = 'home.html'
 
 class Signup(View):
     def get(self, request):
@@ -139,35 +77,107 @@ class Signup(View):
             context = {'form': form}
             return render(request, 'registration/signup.html', context)
 
-# class Login(View):
-#     def get(self, request):
-#         return HttpResponse('Login Page. Creates and/or Logs in to user. Redirects to user profile')
+class Sheet(View):
+    def get(self, request, *args, **kwargs):
+        form = SheetForm(initial={'protochar': kwargs['pk']})
+        form.fields['protochar'].disabled = True
+        context = {'form': form}
+        return render(request, 'sheet_gen.html', context)
+
+    def post(self, request, *args, **kwargs):
+        request.POST._mutable = True
+        request.POST['protochar'] = kwargs['pk']
+        form = SheetForm(request.POST)
+        if form.is_valid():
+            sheet = form.save()
+            print(sheet)
+            return redirect('char_sheet', kwargs['pk'])
+        else:
+            context = {'form': form}
+            return render(request, 'sheet_gen.html', context)
 
 class About(View):
     def get(self, request):
         return HttpResponse('D&D Bestiary is a companion tool for the tabletop role-playing game Dungeons & Dragons (5e). It aims to store and organize your character sheets and campaign information in one place for ease of use with integrated game tools, like dice rolling and an initiative tracker.')
 
-# class Character(View):
-#     def get(self, request):
-#         return HttpResponse('Character View Page. Update button links to edit function. Delete button to remove from db. Links back to user profile and to related campaigns.')
 class Profile(TemplateView):
     template_name = 'profile.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['chars'] = samples
-        context['camps'] = testcampaigns
+        # if self.request.user == False :
+        #     return redirect('home')
+        # context['test'] = self.request.user.protochar.all()
+        context['chars'] = ProtoChar.objects.all().filter(user = self.request.user.pk)
+        context['camps'] = ProtoCamp.objects.all().filter(user = self.request.user.pk)
+        # print(context['test'])
         return context
 
+class CharDetail(DetailView):
 
-class Character(TemplateView):
-    template_name = 'test.html'
+    model = ProtoChar
+    template_name="char_sheet.html"
+    
+class CampDetail(DetailView):
+    model = ProtoCamp
+    template_name="camp_detail.html"
 
-class CharacterList(TemplateView):
-    template_name = 'test_list.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['charsheets'] = samples
-        print(f"Testing: {context['charsheets'][0].name}")
-        return context
-        # return HttpResponse(f"{context[0].name}")
+# class Sheet(DetailView):
+#     model = ProtoSheet
+#     template_name = 'sheet_view.html'
 
+# character CRUD routes
+class CharCreate(CreateView):
+    model = ProtoChar 
+    fields = ['name', 'img', 'bio']
+    template_name = 'char_gen.html'
+    success_url = '/profile/'
+
+class CharUpdate(UpdateView):
+    model = ProtoChar
+    fields = ['name', 'img', 'bio']
+    template_name = 'char_edit.html'
+    success_url = '/profile/'
+
+class CharDelete(DeleteView):
+    model = ProtoChar
+    template_name = 'char_delete.html'
+    success_url = "/profile/"
+
+
+# character sheet CRUD routes
+# class SheetCreate(CreateView):
+#     model = ProtoSheet
+#     fields = ['level', 'race_code', 'class_code']
+#     template_name = 'sheet_gen.html'
+#     success_url = '/profile/'
+#     # will need to fix. complex series of read/write calls etc.
+
+class SheetUpdate(UpdateView):
+    model = ProtoSheet
+    fields = ['name', 'img', 'bio']
+    template_name = 'sheet_edit.html'
+    success_url = '/profile/'
+
+class SheetDelete(DeleteView):
+    model = ProtoSheet
+    template_name = 'sheet_delete.html'
+    success_url = "/profile/"
+
+
+# campaign CRUD routes
+class CampCreate(CreateView):
+    model = ProtoCamp 
+    fields = ['name', 'info', 'img']
+    template_name = 'camp_gen.html'
+    success_url = '/profile/'
+
+class CampUpdate(UpdateView):
+    model = ProtoCamp 
+    fields = ['name', 'info', 'img']
+    template_name = 'camp_edit.html'
+    success_url = '/profile/'
+
+class CampDelete(DeleteView):
+    model = ProtoCamp
+    template_name = 'camp_delete.html'
+    success_url = "/profile/"

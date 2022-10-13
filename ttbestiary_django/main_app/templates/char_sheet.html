@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} Character Sheet {% endblock %}
+{% block content %}
+    <div class="char-wrapper">
+        <p>Name: {{protochar.name}}</p>
+        <p>Bio: {{protochar.bio}}</p>
+        <p>Level: ?</p>
+        <br>
+        <div class="charsheet-wrapper">
+            <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
+        </div>
+    </div>
+    <br>
+    <div class="button-wrapper">
+        <div class='edit-button'>
+            <a href='{% url 'char_edit' protochar.pk %}'>
+                Edit
+            </a>
+        </div>
+        <div class='delete-button'>
+            <a href='{% url 'char_delete' protochar.pk %}'>
+                Delete
+            </a>
+        </div>
+    </div>
+{% endblock %}

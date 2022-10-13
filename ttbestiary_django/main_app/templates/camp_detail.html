@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Campaign Sheet {% endblock %}
+{% block content %}
+    <div class="camp-wrapper">
+        <p>Name: {{protocamp.name}}</p>
+        <p>Info: {{protocamp.info}}</p>
+        <p>Characters: WIP</p>
+
+    </div>
+    <br>
+    <div class="button-wrapper">
+        <div class='edit-button'>
+            <a href='{% url 'camp_edit' protocamp.pk %}'>
+                Edit
+            </a>
+        </div>
+        <div class='delete-button'>
+            <a href='{% url 'camp_delete' protocamp.pk %}'>
+                Delete
+            </a>
+        </div>
+    </div>
+{% endblock %}

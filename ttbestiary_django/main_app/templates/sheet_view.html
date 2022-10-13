@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Character Sheet - Detailed View {% endblock %}
+{% block content %}
+    <div class="camp-wrapper">
+        <p>Level: {{protosheet.level}}</p>
+        <p>Race: {{protosheet.race_code}}</p>
+        <p>Class: {{protosheet.class_code}} [{{protosheet.subclass_code}}]</p>
+
+    </div>
+    <br>
+    <div class="button-wrapper">
+        <div class='edit-button'>
+            <a href='{% url 'sheet_edit' protosheet.pk %}'>
+                Edit
+            </a>
+        </div>
+        <div class='delete-button'>
+            <a href='{% url 'sheet_delete' protosheet.pk %}'>
+                Delete
+            </a>
+        </div>
+    </div>
+{% endblock %}

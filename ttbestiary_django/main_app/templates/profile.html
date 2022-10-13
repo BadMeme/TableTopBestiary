@@ -1,29 +1,44 @@
 {% extends 'base.html' %}
 {% block title %} User Profile {% endblock %}
 {% block content %}
-    <div class="char-wrapper">
-        {% for char in chars %}
-        <a href='/profile/characters/{{char.id}}'>
-            <div class="card">
-                Testing: {{ char.name }}
-                Code: {{ char.class_code }}
+    <h2>Profile Index</h2>
+        <div class="char-wrapper">
+            <h4>Characters</h4>
+            {% for char in chars %}
+            <a href='{% url 'char_sheet' char.pk %}'>
+                <div class="card">
+                    Name: {{ char.name }}
+                    Bio: {{ char.bio }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="camp-wrapper">
+            <h4>Campaigns</h4>
+            {% for camp in camps %}
+            <a href='{% url 'camp_detail' camp.pk %}'>
+                <div class="card">
+                    Name: {{ camp.name }}
+                    Info: {{ camp.info }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <h4>Create</h4>
+        <div class="button-wrapper">
+            <div class='create-button'>
+                <a href='{% url 'char_gen' %}'>
+                    Character
+                </a>
             </div>
-        </a>
-        {% endfor %}
-    </div>
-
-    <div class="button-wrapper">
-        <div class='create-button'>
-            <a href='/profile/campaigns/new'>
-                Placeholder for character create button
-            </a>
+            <div class='create-button'>
+                <a href='{% url 'camp_gen' %}'>
+                    Campaign
+                </a>
+            </div>
         </div>
-        <div class='create-button'>
-            <a href='/profile/campaigns/new'>
-                Placeholder for campaign create button
-            </a>
-        </div>
-    </div>
 
-    <div class='camp-wrapper'></div>
-{% endblock %}
+        <div class='camp-wrapper'></div>
+    {% endblock %}
