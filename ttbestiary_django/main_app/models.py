@@ -1,3 +1,5 @@
+import code
+from operator import mod
 from django.db import models
 from django.contrib.auth.models import User
 import time
@@ -22,15 +24,6 @@ class ProtoChar(models.Model):
 class ProtoSheet(models.Model):
     protochar = models.OneToOneField(ProtoChar, on_delete=models.CASCADE)
     level = models.CharField(max_length=2)
-    # stats = {
-    #     'str' : models.CharField(max_length=2), 
-    #     'dex' : models.CharField(max_length=2), 
-    #     'con' : models.CharField(max_length=2), 
-    #     'int' : models.CharField(max_length=2), 
-    #     'wis' : models.CharField(max_length=2), 
-    #     'cha' : models.CharField(max_length=2), 
-    # }
-    #these will be possibly be models.ForeignKeys
     race_code = models.CharField(max_length=3) 
     class_code = models.CharField(max_length=3)
     subclass_code = models.CharField(max_length=3, default="n/a")
@@ -39,6 +32,7 @@ class ProtoSheet(models.Model):
     # skill_chart = models.Charfield(max_length=100)
     # spell_list_id = models.Charfield(max_length=100)
     #
+
 
 
 class ProtoCamp(models.Model):
@@ -53,3 +47,71 @@ class ProtoCamp(models.Model):
     
     class Meta:
         ordering = ['name']
+
+# class Game(models.Model):
+#     name = models.CharField
+#     build this out to integrate multiple rulesets for character creation
+
+
+class Stats(models.Model):
+    # game = models.ForeignKey(Game, on_delete=models.Cascade, default=1)
+    protosheet = models.OneToOneField(ProtoSheet, on_delete=models.CASCADE, related_name="stats")
+    Str = models.CharField
+    Dex = models.CharField
+    Con = models.CharField
+    Int = models.CharField
+    Wis = models.CharField
+    Con = models.CharField
+
+class Saves(models.Model):
+    protosheet = models.OneToOneField(ProtoSheet, on_delete=models.CASCADE, related_name="saves")
+    str_save = models.BooleanField (default=False)
+    dex_save = models.BooleanField (default=False)
+    con_save = models.BooleanField (default=False)
+    int_save = models.BooleanField (default=False)
+    wis_save = models.BooleanField (default=False)
+    cha_save = models.BooleanField (default=False)
+
+class BaseClass(models.Model):
+    name = models.CharField
+    code = models.CharField
+    
+    hd = models.CharField
+
+    l_arm = models.BooleanField (default=False)
+    m_arm = models.BooleanField (default=False)
+    h_arm = models.BooleanField (default=False)
+    shield = models.BooleanField (default=False)
+
+
+
+    str_save = models.BooleanField (default=False)
+    dex_save = models.BooleanField (default=False)
+    con_save = models.BooleanField (default=False)
+    int_save = models.BooleanField (default=False)
+    wis_save = models.BooleanField (default=False)
+    cha_save = models.BooleanField (default=False)
+
+# class SubClass(BaseClass):
+#     subclass_name = models.CharField
+#     subclass_code = models.Charfield
+
+class RaceTemplate(models.Model):
+    name = models.CharField
+    code = models.CharField
+    # add features
+
+class SubRace(RaceTemplate):
+    sub_name = models.CharField
+    sub_code = models.CharField
+    # add features
+
+
+# class CharSheet(models.Model) :
+#     char = models.OneToOneField(Char, on_delete=models.CASCADE)
+#     level = models.CharField
+#     stats = models.ForeignKey(Stats)
+#     race = models.ForeignKey(Race)
+#     base_class = models.ForeignKey(BaseClass)
+#     sub_class = models.ForeignKey(SubClass)
+

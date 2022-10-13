@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+    Character Sheet Full 
+{% endblock %}
+{% block content %}
+    <h1> Character Sheet </h1>
+    <div class="charsheet-wrapper">
+        <div class="charsheet">
+            <div class="bio-wrapper">
+                <div class="char-name">
+                    Name: {{info.name}}
+                    <br>
+                    Race: {{race.name}}
+                    <br>
+                    Class: {{class.classname}}
+                </div>
+            </div>
+            <br>
+            <div class="secondary-stats-wrapper">
+                {% for stat,value in stats2.items %}
+                    <div class="stat-cell"> 
+                        <span>{{stat}}</span>
+                        :
+                        <span>{{value}}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="statblock-wrapper">
+                <h5>Stats</h5>
+                {% for stat,value in stats.items %}
+                    <div class="stat-cell"> 
+                        <span>{{stat}}</span>
+                        :
+                        <span>{{value}}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="saves-wrapper">
+                <h5>Saves</h5>
+                {% for stat,value in saves.items %}
+                    <div class="stat-cell"> 
+                        <input type="checkbox" name="{{Stat}}" disabled {%if value == True %}checked{%endif%}>
+                        <span>{{stat}}</span>:<span>{%if value == True %} + {{info.pro}}{%endif%} </span>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="skills-wrapper">
+                <h5>Saves</h5>
+                {% for skill,value in skills.items %}
+                    <div class="stat-cell"> 
+                        <input type="checkbox" name="{{skill}}" disabled {%if value == True %}checked{%endif%}>
+                        <span>{{skill}}</span>:<span>{%if value == True %} + {{info.pro}}{%endif%} </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>       
+{% endblock %}

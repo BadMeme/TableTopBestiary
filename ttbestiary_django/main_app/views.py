@@ -112,6 +112,60 @@ class Profile(TemplateView):
         # print(context['test'])
         return context
 
+class CharacterSheet(TemplateView):
+    template_name = 'render_char.html'
+    test_context = {
+        'info' : {
+            'name' : 'Test Character',
+            'level' : 1,
+            'pro' : 2
+        },
+        'race' : {
+            'name' : 'Test Race',
+        },
+        'class' : {
+            'classname' : 'Test Class',
+            'hd' : 10
+        },
+        'stats' : {
+            'str' : 15,
+            'dex' : 14,
+            'con' : 13,
+            'int' : 10,
+            'wis' : 12,
+            'cha' : 8
+        },
+        'stats_2' : {
+            'HP' : 11,
+            'AC' : 15,
+            'Initiative' : 2
+        },
+        'saves' : {
+            'str' : True,
+            'dex' : False,
+            'con' : True,
+            'int' : False,
+            'wis' : False,
+            'cha' : False
+        },
+        'skills' : {
+            'test_skill_1' : False,
+            'test_skill_2' : False,
+            'test_skill_3' : True,
+            'test_skill_4' : False,
+            'test_skill_5' : True,
+            'test_skill_6' : False,
+        }
+    }
+    def get_context_data(self, **kwargs):
+        # context = super().get_context_data(**kwargs)
+        #
+        #
+        #
+        context = self.test_context
+        print(context['class']['classname'])
+        return context
+
 class CharDetail(DetailView):
     model = ProtoChar
     template_name="char/char_sheet.html"
