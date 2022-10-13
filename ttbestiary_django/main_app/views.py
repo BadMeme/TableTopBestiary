@@ -113,13 +113,12 @@ class Profile(TemplateView):
         return context
 
 class CharDetail(DetailView):
+    model = ProtoChar
+    template_name="char/char_sheet.html"
+    
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     print(context)
-      
-    
-    model = ProtoChar
-    template_name="char/char_sheet.html"
     
 class CampDetail(DetailView):
     model = ProtoCamp
