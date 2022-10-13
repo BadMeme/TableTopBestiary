@@ -82,7 +82,7 @@ class Sheet(View):
         form = SheetForm(initial={'protochar': kwargs['pk']})
         form.fields['protochar'].disabled = True
         context = {'form': form}
-        return render(request, 'sheet_gen.html', context)
+        return render(request, 'sheet/sheet_gen.html', context)
 
     def post(self, request, *args, **kwargs):
         request.POST._mutable = True
@@ -91,10 +91,10 @@ class Sheet(View):
         if form.is_valid():
             sheet = form.save()
             print(sheet)
-            return redirect('char_sheet', kwargs['pk'])
+            return redirect('char/char_sheet', kwargs['pk'])
         else:
             context = {'form': form}
-            return render(request, 'sheet_gen.html', context)
+            return render(request, 'sheet/sheet_gen.html', context)
 
 class About(View):
     def get(self, request):
@@ -113,13 +113,17 @@ class Profile(TemplateView):
         return context
 
 class CharDetail(DetailView):
-
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     print(context)
+      
+    
     model = ProtoChar
-    template_name="char_sheet.html"
+    template_name="char/char_sheet.html"
     
 class CampDetail(DetailView):
     model = ProtoCamp
-    template_name="camp_detail.html"
+    template_name="camp/camp_detail.html"
 
 # class Sheet(DetailView):
 #     model = ProtoSheet
@@ -129,18 +133,18 @@ class CampDetail(DetailView):
 class CharCreate(CreateView):
     model = ProtoChar 
     fields = ['name', 'img', 'bio']
-    template_name = 'char_gen.html'
+    template_name = 'char/char_gen.html'
     success_url = '/profile/'
 
 class CharUpdate(UpdateView):
     model = ProtoChar
     fields = ['name', 'img', 'bio']
-    template_name = 'char_edit.html'
+    template_name = 'char/char_edit.html'
     success_url = '/profile/'
 
 class CharDelete(DeleteView):
     model = ProtoChar
-    template_name = 'char_delete.html'
+    template_name = 'char/char_delete.html'
     success_url = "/profile/"
 
 
@@ -155,12 +159,12 @@ class CharDelete(DeleteView):
 class SheetUpdate(UpdateView):
     model = ProtoSheet
     fields = ['name', 'img', 'bio']
-    template_name = 'sheet_edit.html'
+    template_name = 'sheet/sheet_edit.html'
     success_url = '/profile/'
 
 class SheetDelete(DeleteView):
     model = ProtoSheet
-    template_name = 'sheet_delete.html'
+    template_name = 'sheet/sheet_delete.html'
     success_url = "/profile/"
 
 
@@ -168,16 +172,16 @@ class SheetDelete(DeleteView):
 class CampCreate(CreateView):
     model = ProtoCamp 
     fields = ['name', 'info', 'img']
-    template_name = 'camp_gen.html'
+    template_name = 'camp/camp_gen.html'
     success_url = '/profile/'
 
 class CampUpdate(UpdateView):
     model = ProtoCamp 
     fields = ['name', 'info', 'img']
-    template_name = 'camp_edit.html'
+    template_name = 'camp/camp_edit.html'
     success_url = '/profile/'
 
 class CampDelete(DeleteView):
     model = ProtoCamp
-    template_name = 'camp_delete.html'
+    template_name = 'camp/camp_delete.html'
     success_url = "/profile/"

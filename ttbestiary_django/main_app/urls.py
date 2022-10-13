@@ -12,7 +12,7 @@ urlpatterns = [
     path('profile/character/<int:pk>/edit', views.CharUpdate.as_view(), name="char_edit"),
     path('profile/character/<int:pk>/delete', views.CharDelete.as_view(), name="char_delete"),
     #
-    # path('profile/character/<int:pk>/sheet', views.Sheet.as_view(), name='sheet_view'),
+    path('profile/character/<int:pk>/sheet', views.Sheet.as_view(), name='sheet_view'),
     path('profile/character/<int:pk>/sheet/new', views.Sheet.as_view(), name='sheet_gen'),
     path('profile/character/<int:pk>/sheet/edit', views.SheetUpdate.as_view(), name='sheet_edit'),
     path('profile/character/<int:pk>/sheet/delete', views.SheetDelete.as_view(), name='sheet_delete'),
