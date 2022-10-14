@@ -9,6 +9,8 @@ from django.views.generic import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponse 
+#
+from formtools.wizard.views import SessionWizardView
 
 #models
 from .models import ProtoChar, ProtoSheet, ProtoCamp
@@ -238,3 +240,123 @@ class CampDelete(DeleteView):
     model = ProtoCamp
     template_name = 'camp/camp_delete.html'
     success_url = "/profile/"
+
+#### Form Wizard Shit ###
+
+# Create Character 
+# 1) Name, Bio, Level, misc details
+# 2) Choose Race, # refactor => make Race-dependent choices
+# 3) Choose Class # refactor => make class-dependent choice
+# 4) Assign Stats # refactor => Choose method: Manual, Std_arr, point buy, Roll
+# # 5) Starting Equiptment/Gold
+# # 6) Make choices for level - dependent features. Repeat process for every level of created character
+# # 7) Calculate secondary stats
+# # 8) Finalize Character sheet
+
+class CharGenForm1(forms.Form):
+    name = forms.CharField()
+    bio = forms.CharField()
+    level = forms.IntegerField(initial=1)
+
+step_2_choices = [
+    ('hum', 'Human'), ('elf', 'Elf'), ('dwa', 'Dwarf'), ('hal', 'Halfling')
+    ]
+class CharGenForm2(forms.Form):
+    race = forms.MultipleChoiceField(
+        required=False,
+        choices = step_2_choices
+    )
+    #note racial modifiers that need to be stored (bonus proficiencies, stat modifiers, etc)
+    #if there are race based options, liks starting spells, etc, generate a list and allow one to be selected
+    temp_option_r_1 = forms.CheckboxInput()
+    temp_option_r_2 = forms.CheckboxInput()
+
+step_3_choices = [
+    ('fig', 'Fighter'), ('wiz', 'Wizard'), ('cle', 'Cleric'), ('rog', 'Rogue')
+    ]
+class CharGenForm3(forms.Form):
+    base_class = forms.MultipleChoiceField(
+        required=False,
+        choices = step_3_choices
+    )
+    #find list of class skills, allow user to select specified number from list and save those inputs
+    temp_skills = forms.CheckboxSelectMultiple()
+    # if there are class based options at level 1, generate a list and allow one to be selected
+    temp_option_c_1 = forms.CheckboxInput()
+    temp_option_r_2 = forms.CheckboxInput()
+    # note and store relevant template info: HD, proficiencies, etc.
+
+class CharGenForm4(forms.Form):
+    #based on rules => iterate through a list of stats and generate an input field for each
+    #for now, manual input and D&D5e rules assumed, but in the future can add options for STD array and rolling
+    str = forms.IntegerField(initial=10)
+    dex = forms.IntegerField(initial=10)
+    con = forms.IntegerField(initial=10)
+    int = forms.IntegerField(initial=10)
+    wis = forms.IntegerField(initial=10)
+    cha = forms.IntegerField(initial=10)
+
+    #make sure to indicate stat bonuses from race
+step_5_choices = [
+    ('a', 'Gold'), ('b', 'Preset A'), ('c', 'Preset B')
+    ]
+
+class CharGenForm5(forms.Form):
+    
+    #note the options provided by base class and render them here from state
+    equip_option_1 = forms.MultipleChoiceField(
+        required = False,
+        choices = step_5_choices
+    )
+
+step_6_choices = [
+    ('a', 'skill_a'), ('b', 'skill_b'), ('c', 'skill_c'), ('d', 'skill_d')
+    ]
+
+class CharGenForm6(forms.Form):
+    #If there is a class dependant option at your level, answer prompt here
+    #Loop through this step for every level dependent class feature
+    level_opt_c = forms.MultipleChoiceField(
+        required=True,
+        widget=forms.CheckboxSelectMultiple,
+        choices = step_6_choices
+    )
+
+step_6_choices = [
+    ('a', 'skill_a'), ('b', 'skill_b'), ('c', 'skill_c'), ('d', 'skill_d')
+    ]
+
+class CharGenForm7(forms.Form):
+    #if level > 1 and there is a race dependent option at your level, answer prompt here
+    #Loop Through This step for evey level dependent race feature
+    level_opt_r = forms.MultipleChoiceField(
+        required=True,
+        widget=forms.CheckboxSelectMultiple,
+        choices = step_6_choices
+    )
+
+class CharGenFormFinalize(forms.Form):
+    # review the current state of the character's input fields and finalize. On submission, 
+    # Secondary stats will be calculated and saved, and all forms will write their respective objects to the DB, linked to the created Character
+    def get_context_data(self, **kwargs):
+        context = 'placeholder'
+        return context
+    
+# WIZARD TIME
+class ContactForm1(forms.Form):
+    subject = forms.CharField(max_length=100)
+    sender = forms.EmailField()
+class ContactForm2(forms.Form):
+    message = forms.CharField(widget=forms.Textarea)
+
+class CharGenWizard(SessionWizardView):
+    form_list = [CharGenForm1, CharGenForm2, CharGenForm3, CharGenForm4, CharGenForm5, CharGenForm6, CharGenForm7]
+    def get_template_names(self):
+        return 'form_wizard.html'
+    def done(self, form_list, form_dict, **kwargs):
+        # return render(self.request, 'done.html', {
+        #     'form_data': [form.cleaned_data for form in form_list],
+        # })
+        return render(self.request, 'home.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })

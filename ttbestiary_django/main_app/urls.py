@@ -8,6 +8,9 @@ urlpatterns = [
     path('profile/', views.Profile.as_view(), name='profile'),
     #
     path('profile/character/new', views.CharCreate.as_view(), name='char_gen'),
+    # Form Wizard Test
+    path('profile/character/new/test', views.CharGenWizard.as_view(), name='form_wizard.html'),
+    # -----
     path('profile/character/<int:pk>', views.CharDetail.as_view(), name='char_sheet'),
     path('profile/character/<int:pk>/edit', views.CharUpdate.as_view(), name="char_edit"),
     path('profile/character/<int:pk>/delete', views.CharDelete.as_view(), name="char_delete"),
