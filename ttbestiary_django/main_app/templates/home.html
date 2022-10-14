@@ -1,25 +1,22 @@
 {% extends 'base.html' %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
-    <div class="home-icon-wrapper">
-        Put something cool here lol
-    </div>
     <br>
-    <div class="profile-button">
-        <a href="/profile/" class="profile-link">Profile</a>
-    </div>
     <div class="login-wrapper">
-        <div class='login-form'>
+        <button class="profile-button">
+            <a href="/profile/" class="profile-link">Profile</a>
+        </button>
+        <br>
+        <button class='login-button'>
             <a href='/accounts/login/'>
                 Login
             </a>
-        </div>
-        <div class='signup-button'>
+        </button>
+        <br>
+        <button class='signup-button'>
             <a href='/accounts/signup/'>
                 Signup 
             </a>
-        </div>
+        </button>
     </div>
-
-    <div class='camp-wrapper'></div>
 {% endblock %}

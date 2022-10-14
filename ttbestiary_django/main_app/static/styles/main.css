@@ -2,6 +2,11 @@ body {
     background-color: #1e122fba;
     color: #ffffff;
     min-height: 100vh;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/631c6296dbdc564c321c3e99/1662804657404-159D2297V91P7KBWA8MZ/white+gemoetric.png);
+    background-size: 25vmin;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 18%;
 }
 
 h1,
@@ -14,28 +19,48 @@ h3 {
     color: #ffffff;
 }
 
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    justify-content: center;
-    gap: 30px;
-}
-
-.gallery .card {
-    transition: .1s linear;
-}
-
-.gallery .card:hover {
-    transform: scale(1.1);
-    z-index: 10;
-}
-
 p {
     font-size: 12px;
 }
 
+
+.login-wrapper {
+    background-color: rgb(21, 7, 21);
+    border-radius: 7px;
+    height: 145px;
+    width: 90px;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: block;
+    padding: 7px;
+}
+
+.profile-button {
+    height: 40px;
+    width: 70px;
+    margin: 2px 0px ;
+    font-weight: 600;
+}
+
+.login-button {
+    height: 40px;
+    width: 70px;
+    margin: 2px 0px;
+    font-weight: 600;
+}
+
+.signup-button {
+    height: 40px;
+    width: 70px;
+    margin: 2px 0px;
+    font-weight: 600;
+}
+
 .anchor-bar {
-    /* overflow: hidden; */
+    overflow: hidden;
     position: fixed;
     bottom: 0;
     width: 100%;
