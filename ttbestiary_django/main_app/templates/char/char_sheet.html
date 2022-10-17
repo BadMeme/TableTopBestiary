@@ -4,23 +4,43 @@
     <div class="char-wrapper">
         <p>Name: {{protochar.name}}</p>
         <p>Bio: {{protochar.bio}}</p>
-        <p>Level: ?</p>
+
+        {% if protochar.protosheet %}
+
+        <p>Race: {{protochar.protosheet.race}}</p>
+        <p>Class: {{protochar.protosheet.base_class}}</p>
         <br>
-        <div class="charsheet-wrapper">
-            <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
+        <div class="stat-block">
+            <p>STR: {{protochar.protosheet.str_stat}}</p>
+            <p>DEX: {{protochar.protosheet.dex_stat}}</p>
+            <p>CON: {{protochar.protosheet.con_stat}}</p>
+            <p>WIS: {{protochar.protosheet.int_stat}}</p>
+            <p>WIS: {{protochar.protosheet.wis_stat}}</p>
+            <p>CHA: {{protochar.protosheet.cha_stat}}</p>
         </div>
+        <button class="charsheet-button">
+            <a href='{% url 'sheet_view' protochar.pk protochar.protosheet.pk %}'>View Sheet</a>
+        </button>
+        <button class="charsheet-button">
+            <a href='{% url 'sheet_edit' protochar.pk protochar.protosheet.pk %}'>Edit Sheet</a>
+        </button>
+        {% else %}
+        <button class="charsheet-button">
+            <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
+        </button>
+        {% endif %}
     </div>
     <br>
     <div class="button-wrapper">
-        <div class='edit-button'>
+        <button class='edit-button'>
             <a href='{% url 'char_edit' protochar.pk %}'>
                 Edit
             </a>
-        </div>
-        <div class='delete-button'>
+        </button>
+        <button class='delete-button'>
             <a href='{% url 'char_delete' protochar.pk %}'>
                 Delete
             </a>
-        </div>
+        </button>
     </div>
 {% endblock %}

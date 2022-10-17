@@ -16,11 +16,14 @@ urlpatterns = [
     path('profile/character/<int:pk>/delete', views.CharDelete.as_view(), name="char_delete"),
     #
     path('profile/character/test', views.CharacterSheet.as_view(), name='render_char'),
-    path('profile/character/<int:pk>/sheet', views.Sheet.as_view(), name='sheet_view'),
-    path('profile/character/<int:pk>/sheet/new', views.Sheet.as_view(), name='sheet_gen'),
-    path('profile/character/<int:pk>/sheet/edit', views.SheetUpdate.as_view(), name='sheet_edit'),
+    # 
+    path('profile/character/<int:pk>/sheet/test', views.CharProfile.as_view(), name=''),
+    # 
+    path('profile/character/<int:pk>/sheet/new', views.SheetCreate.as_view(), name='sheet_gen'),
     path('profile/character/<int:pk>/sheet/delete', views.SheetDelete.as_view(), name='sheet_delete'),
 
+    path('profile/character/<int:pk>/sheet/<int:sheet_pk>/edit', views.SheetDetail.as_view(), name='sheet_view'),
+    path('profile/character/<int:pk>/sheet/<int:sheet_pk>/edit', views.SheetUpdate.as_view(), name='sheet_edit'),
     #
     path('profile/campaign/new', views.CampCreate.as_view(), name='camp_gen'),
     path('profile/campaign/<int:pk>', views.CampDetail.as_view(), name="camp_detail"),
@@ -28,5 +31,6 @@ urlpatterns = [
     path('profile/campaign/<int:pk>/delete', views.CampDelete.as_view(), name="camp_delete"),
     #
     path('accounts/signup/', views.Signup.as_view(), name='signup'),
+    # path('accounts/logout/', views.Logout.as_view(), name='logout')
 
 ]

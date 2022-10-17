@@ -1,14 +1,40 @@
 {% extends 'base.html' %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
-    <br>
+
+
+{% if user.is_authenticated %}
+
+
+
+<div class="placeholder-container">
+
+    
+
+</div>
+
+Hi {{ user.username }}!
     <div class="login-wrapper">
+        
         <button class="profile-button">
             <a href="/profile/" class="profile-link">Profile</a>
         </button>
         <br>
+        <button class='signup-button'>
+            <a href='{% url 'logout' %}'>
+                Logout
+            </a>
+        </button>
+    </div>
+
+    {% else %}
+  
+    </div>
+    
+    <div class="login-wrapper">
+        <p>You are not logged in</p>
         <button class='login-button'>
-            <a href='/accounts/login/'>
+            <a href='{% url 'login' %}'>
                 Login
             </a>
         </button>
@@ -19,4 +45,6 @@
             </a>
         </button>
     </div>
+{% endif %}
+
 {% endblock %}

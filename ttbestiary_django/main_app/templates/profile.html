@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} User Profile {% endblock %}
 {% block content %}
-    <h2>Profile Index</h2>
+    <div class="placeholder-container">
+
+    </div>
+    <div class="profile-container">
         <div class="char-wrapper">
             <h4>Characters</h4>
             {% for char in chars %}
@@ -26,19 +29,20 @@
             {% endfor %}
         </div>
 
+        
+        
+    </div>
+    <div class="button-wrapper">
         <h4>Create</h4>
-        <div class="button-wrapper">
-            <div class='create-button'>
-                <a href='{% url 'char_gen' %}'>
-                    Character
-                </a>
-            </div>
-            <div class='create-button'>
-                <a href='{% url 'camp_gen' %}'>
-                    Campaign
-                </a>
-            </div>
-        </div>
-
-        <div class='camp-wrapper'></div>
+        <button class='button'>
+            <a href='{% url 'char_gen' %}'>
+                Character
+            </a>
+        </button>
+        <button class='button'>
+            <a href='{% url 'camp_gen' %}'>
+                Campaign
+            </a>
+        </button>
+    </div>
     {% endblock %}

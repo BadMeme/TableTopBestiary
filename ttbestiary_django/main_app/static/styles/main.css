@@ -2,11 +2,11 @@ body {
     background-color: #1e122fba;
     color: #ffffff;
     min-height: 100vh;
-    background-image: url(https://images.squarespace-cdn.com/content/v1/631c6296dbdc564c321c3e99/1662804657404-159D2297V91P7KBWA8MZ/white+gemoetric.png);
+    /* background-image: url(https://images.squarespace-cdn.com/content/v1/631c6296dbdc564c321c3e99/1662804657404-159D2297V91P7KBWA8MZ/white+gemoetric.png);
     background-size: 25vmin;
     background-repeat: no-repeat;
     background-position-x: center;
-    background-position-y: 18%;
+    background-position-y: 18%; */
 }
 
 h1,
@@ -25,10 +25,8 @@ p {
 
 
 .login-wrapper {
-    background-color: rgb(21, 7, 21);
-    border-radius: 7px;
-    height: 145px;
-    width: 90px;
+    background-color: rgba(21, 7, 21, .3);
+    border-radius: 4px;
     position: absolute;
     bottom: 20%;
     left: 50%;
@@ -38,10 +36,65 @@ p {
     padding: 7px;
 }
 
+.placeholder-container {
+    border: red solid;
+    position: 40vh;
+    height: 40vh;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/631c6296dbdc564c321c3e99/1662804657404-159D2297V91P7KBWA8MZ/white+gemoetric.png);
+    background-size: 25vmin;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.profile-container {
+    border: solid green;
+    position: 40%;
+    min-height: auto;
+    max-height: max-content;
+}
+.char-wrapper {
+    float: left;
+    padding: 5px;
+    border: solid blue;
+    width: 40vw;
+
+}
+
+.camp-wrapper {
+    padding: 5px;
+    float: right;
+    border: solid blue;
+    width: 40vw;
+}
+
+.button-wrapper {
+    padding: 5px;
+    border: solid greenyellow;
+}
+
+.card {
+    max-width: 40vw;
+    text-overflow: ellipsis;
+    margin: 5px 5px;
+} 
+
+h4 {
+    text-align: center;
+}
+
+.button {
+    height: 40px;
+    width: 40px;
+    margin: 2px 0px;
+    font-weight: 600;
+    justify-items: center;
+}
+
 .profile-button {
     height: 40px;
     width: 70px;
-    margin: 2px 0px ;
+    margin: 0px 0px 2px;
     font-weight: 600;
 }
 
@@ -53,6 +106,20 @@ p {
 }
 
 .signup-button {
+    height: 40px;
+    width: 70px;
+    margin: 2px 0px 0px;
+    font-weight: 600;
+}
+
+.edit-button {
+    height: 40px;
+    width: 70px;
+    margin: 2px 0px;
+    font-weight: 600;
+}
+
+.delete-button {
     height: 40px;
     width: 70px;
     margin: 2px 0px;
