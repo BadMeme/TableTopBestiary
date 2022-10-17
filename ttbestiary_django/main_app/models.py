@@ -35,8 +35,8 @@ class ProtoSheet(models.Model):
         ('Half-Elf' , 'Half-Elf'),
         ('Half-Orc' , 'Half-Orc'),
         ('Gnome' , 'Gnome'),
-        ('Drg' , 'Dragonborn'),
-        ('Tie' , 'Tiefling'),
+        ('Dragonborn' , 'Dragonborn'),
+        ('Tiefling' , 'Tiefling'),
     ]
     race = models.CharField(
         max_length=10,
@@ -118,6 +118,7 @@ class ProtoCamp(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     info = models.CharField(max_length=500)
+    public = models.BooleanField(default=False)
     img = models.CharField(max_length=500, default='https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/magic-spell-book-open-512.png')
     #
 
@@ -126,6 +127,16 @@ class ProtoCamp(models.Model):
     
     class Meta:
         ordering = ['name']
+
+class MemberList(models.Model):
+    campaign = models.ForeignKey(ProtoCamp, on_delete=models.CASCADE, related_name='registry')
+    member = models.ForeignKey(ProtoChar, on_delete=models.CASCADE, related_name='member')
+
+class MemberRequest(models.Model):
+    character = models.OneToOneField(ProtoChar, on_delete=models.CASCADE, related_name='request')
+    campaign = models.ForeignKey(ProtoCamp, on_delete=models.CASCADE, related_name='campaign')
+
+
 
 # class Game(models.Model):
 #     name = models.CharField

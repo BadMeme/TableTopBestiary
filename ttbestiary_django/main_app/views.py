@@ -1,6 +1,7 @@
 # from socketserver import _RequestType
 # from xml.sax.handler import property_declaration_handler
 
+from pyexpat import model
 from django import forms
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -14,7 +15,7 @@ from django.http import HttpResponse
 from formtools.wizard.views import SessionWizardView
 
 #models
-from .models import ProtoChar, ProtoSheet, ProtoCamp
+from .models import ProtoChar, ProtoSheet, ProtoCamp, MemberList, MemberRequest
 
 #login/register
 from django.contrib.auth import login, logout
@@ -52,12 +53,27 @@ class SheetForm(ModelForm):
         fields = '__all__'
 
 class CampForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CampForm, self).__init__(*args, **kwargs)
-        self.fields['user'].disabled = True
-
+    
     class Meta:
         model = ProtoCamp
+        fields = '__all__'
+
+class MemberListForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MemberListForm, self).__init__(*args, **kwargs)
+        self.fields['member'].disabled = True
+
+    class Meta:
+        model = MemberList
+        fields = '__all__'
+
+class MemberRequestForm(ModelForm):
+    # def __init__(self, *args, **kwargs):
+    #     super(RequestForm, self).__init__(*args, **kwargs)
+    #     self.fields['__all__'].disabled = True
+
+    class Meta:
+        model = MemberRequest
         fields = '__all__'
 
 # -----
@@ -200,7 +216,68 @@ class CampDelete(DeleteView):
     success_url = "/profile/"
 
 
+###
 
+class GameSearch(TemplateView):
+    template_name = 'char/game_search.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        context['games'] = ProtoCamp.objects.all()
+        
+        return context
+
+class MemberRequest(TemplateView):
+    template_name = 'char/request_create.html'
+  
+
+    def get(self, request, *args, **kwargs):
+        form = MemberRequestForm(initial={
+            'character' : kwargs['pk'],
+            'campaign' : kwargs['camp_pk'],
+            })
+        form.fields['character'].disabled = True
+        context = {'form': form}
+        return render(request, 'char/request_create.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = MemberRequestForm(request.POST)
+        if form.is_valid():
+            MemberRequest = form.save()
+            return redirect('char/char_sheet', kwargs['pk']) #this doesnt seem to work
+        else:
+            context = {'form': form}
+            return render(request, 'char/request_create.html', context)
+
+class MemberSearch(TemplateView):
+    template_name = 'camp/member_search.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        context['characters'] = ProtoChar.objects.all().filter()
+        
+        return context
+
+class MemberRegister(TemplateView):
+    template_name = 'camp/member_register.html'
+    
+    def get(self, request, *args, **kwargs):
+        form = MemberListForm(initial={
+            'campaign' : kwargs['pk'],
+            'member' : kwargs['char_pk'],
+            })
+        form.fields['campaign'].disabled = True
+        context = {'form': form}
+        return render(request, 'camp/member_register.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = MemberListForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('camp/camp_sheet', kwargs['pk']) #this doesnt seem to work
+        else:
+            context = {'form': form}
+            return render(request, 'camp/member_register.html', context)
 
 #### Future Refactoring Ahead
 

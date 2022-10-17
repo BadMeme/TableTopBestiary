@@ -18,6 +18,8 @@
             <p>WIS: {{protochar.protosheet.wis_stat}}</p>
             <p>CHA: {{protochar.protosheet.cha_stat}}</p>
         </div>
+
+        <div> Pending Campaign: {{protochar.request}} </div>
         <button class="charsheet-button">
             <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit Sheet</a>
         </button>
@@ -32,6 +34,14 @@
     </div>
     <br>
     <div class="button-wrapper">
+        {% if protochar.request == None %}
+        <button class='edit-button'>
+            <a href='{% url 'game_search' protochar.pk %}'>
+                Join Campaign
+            </a>
+        </button>
+        {% endif %}
+
         <button class='edit-button'>
             <a href='{% url 'char_edit' protochar.pk %}'>
                 Edit

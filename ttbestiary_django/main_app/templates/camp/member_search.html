@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Member Search {% endblock %}
+{% block content %}
+
+    {% for character in characters %}
+        {% if character.request %}
+<div> 
+    <p>Name: {{character.name}}</p>
+    <p>Campaign Request: {{character.request.campaign}}</p>
+</div><a href='{% url 'member_register' pk character.pk %}'><button>Add To Campaign</button></a>
+        {% endif %}
+<br>
+    {% endfor %}
+
+{% endblock %}

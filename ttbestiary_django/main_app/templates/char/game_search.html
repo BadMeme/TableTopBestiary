@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Game Search {% endblock %}
+{% block content %}
+    {% if games == None %}
+    <div>No Games Available</div>
+    {% else %}
+        {% for game in games %}
+    <div className="card">
+        <div> Name: {{game.name}} </div>
+    </div><button><a href='{% url 'request_create' pk game.pk %}'>
+        Join Campaign
+    </a></button>
+    <br>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}s

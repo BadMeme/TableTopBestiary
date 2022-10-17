@@ -9,6 +9,13 @@
     </div>
     <br>
     <div class="button-wrapper">
+        
+        <button class='edit-button'>
+            <a href='{% url 'member_search' protocamp.pk %}'>
+                Find Members
+            </a>
+        </button>
+
         <div class='edit-button'>
             <a href='{% url 'camp_edit' protocamp.pk %}'>
                 Edit
