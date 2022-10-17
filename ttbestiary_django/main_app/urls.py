@@ -24,6 +24,7 @@ urlpatterns = [
     #
     path('profile/campaign/new', views.CampCreate.as_view(), name='camp_gen'),
     path('profile/campaign/<int:pk>', views.CampDetail.as_view(), name="camp_detail"),
+    path('profile/campaign/<int:pk>/test', views.CampDetailTest.as_view(), name="camp_detail"),
     path('profile/campaign/<int:pk>/edit', views.CampUpdate.as_view(), name="camp_edit"),
     path('profile/campaign/<int:pk>/delete', views.CampDelete.as_view(), name="camp_delete"),
     path('profile/campaign/<int:pk>/search', views.MemberSearch.as_view(), name='member_search'),

@@ -117,10 +117,23 @@ class Profile(TemplateView):
 class CharDetail(DetailView):
     model = ProtoChar
     template_name="char/char_sheet.html"
-    
+
 class CampDetail(DetailView):
     model = ProtoCamp
     template_name="camp/camp_detail.html"
+    
+# class CampDetailTest(TemplateView):
+    
+#     template_name="camp/camp_detail.html"
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # if self.request.user == False :
+#         #     return redirect('home')
+#         # context['test'] = self.request.user.protochar.all()
+#         context['camp'] = ProtoCamp.objects.all().filter(id = kwargs['pk'])
+#         context['members'] = MemberList.objects.all().filter(campaign = kwargs['pk'])
+        
+#         return context
 
 class SheetDetail(DetailView):
     model = ProtoSheet
@@ -229,7 +242,6 @@ class GameSearch(TemplateView):
 
 class MemberRequest(TemplateView):
     template_name = 'char/request_create.html'
-  
 
     def get(self, request, *args, **kwargs):
         form = MemberRequestForm(initial={
