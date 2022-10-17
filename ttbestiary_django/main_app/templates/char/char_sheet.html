@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} Character Sheet {% endblock %}
 {% block content %}
-    <div class="char-wrapper">
+<div class="placeholder-container">
+    <div class="charsheet-wrapper">
         <p>Name: {{protochar.name}}</p>
         <p>Bio: {{protochar.bio}}</p>
 
@@ -10,6 +11,11 @@
         <p>Race: {{protochar.protosheet.race}}</p>
         <p>Class: {{protochar.protosheet.base_class}}</p>
         <br>
+        <div class="derived-stat-block">
+            <span>
+        </div>
+
+
         <div class="stat-block">
             <p>STR: {{protochar.protosheet.str_stat}}</p>
             <p>DEX: {{protochar.protosheet.dex_stat}}</p>
@@ -18,39 +24,94 @@
             <p>WIS: {{protochar.protosheet.wis_stat}}</p>
             <p>CHA: {{protochar.protosheet.cha_stat}}</p>
         </div>
+        <br>
+        <div class="save_block">
+            <p>STR: {{protochar.protosheet.str_save}}</p>
+            <p>DEX: {{protochar.protosheet.dex_save}}</p>
+            <p>CON: {{protochar.protosheet.con_save}}</p>
+            <p>WIS: {{protochar.protosheet.int_save}}</p>
+            <p>WIS: {{protochar.protosheet.wis_save}}</p>
+            <p>CHA: {{protochar.protosheet.cha_save}}</p>
+        </div>
+    
+        <div class="skill-block">
+            <table>
+                <tr>
+                  <th>Skill</th>
+                  <th>Stat</th>
+                  <th>Proficient</th>
+                </tr>
+                <tr>
+                  <td>Acrobatics</td>
+                  <td>DEX</td>
+                  <td>{{protochar.protosheet.acrobatics}}</td>
+                </tr>
+                <tr>
+                    <td>Animal Hand.</td>
+                    <td>WIS</td>
+                    <td>{{protochar.protosheet.animal_handling}}</td>
+                </tr>
+                <tr>
+                    <td>Arcana</td>
+                    <td>INT</td>
+                    <td>{{protochar.protosheet.arcana}}</td>
+                </tr>
+                <tr>
+                    <td>Athletics</td>
+                    <td>STR</td>
+                    <td>{{protochar.protosheet.Athletics}}</td>
+                </tr>
+                <tr>
+                    <td>Animal Hand.</td>
+                    <td>WIS</td>
+                    <td>{{protochar.protosheet.animal_handling}}</td>
+                </tr>
+                <tr>
+                    <td>Deception</td>
+                    <td>CHA</td>
+                    <td>{{protochar.protosheet.deception}}</td>
+                </tr>
+                <tr>
+                    <td>History</td>
+                    <td>WIS</td>
+                    <td>{{protochar.protosheet.history}}</td>
+                </tr>
+                <tr>
+                    <td>Insight</td>
+                    <td>WIS</td>
+                    <td>{{protochar.protosheet.insight}}</td>
+                </tr>
+                <tr>
+                    <td>Intimidation</td>
+                    <td>CHA</td>
+                    <td>{{protochar.protosheet.intimidation}}</td>
+                </tr>
+                <tr>
+                    <td>Investigation</td>
+                    <td>INT</td>
+                    <td>{{protochar.protosheet.investigation}}</td>
+                </tr>
+                
+              </table>
 
-        <div> Pending Campaign: {{protochar.request}} </div>
-        <button class="charsheet-button">
-            <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit Sheet</a>
-        </button>
-        <button class="charsheet-button">
-            <a href='{% url 'sheet_delete' protochar.protosheet.pk %}'>Delete Sheet</a>
-        </button>
-        {% else %}
-        <button class="charsheet-button">
-            <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
-        </button>
+        
+            {% else %}
+            <button class="charsheet-button">
+                <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
+            </button>
         {% endif %}
     </div>
     <br>
+</div>
     <div class="button-wrapper">
-        {% if protochar.request == None %}
-        <button class='edit-button'>
-            <a href='{% url 'game_search' protochar.pk %}'>
-                Join Campaign
-            </a>
+        <button class="charsheet-button">
+                <a href='{% url 'game_search' protochar.pk %}'>Join</a>
         </button>
-        {% endif %}
-
-        <button class='edit-button'>
-            <a href='{% url 'char_edit' protochar.pk %}'>
-                Edit
-            </a>
+        <button class="charsheet-button">
+                <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit</a>
         </button>
-        <button class='delete-button'>
-            <a href='{% url 'char_delete' protochar.pk %}'>
-                Delete
-            </a>
+        <button class="charsheet-button">
+                <a href='{% url 'sheet_delete' protochar.protosheet.pk %}'>Delete</a>
         </button>
     </div>
 {% endblock %}

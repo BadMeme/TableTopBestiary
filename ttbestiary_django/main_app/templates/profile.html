@@ -11,38 +11,42 @@
             <a href='{% url 'char_sheet' char.pk %}'>
                 <div class="card">
                     Name: {{ char.name }}
+                    <br>
                     Bio: {{ char.bio }}
                 </div>
             </a>
             {% endfor %}
+            
+            
         </div>
-
+        
         <div class="camp-wrapper">
             <h4>Campaigns</h4>
             {% for camp in camps %}
             <a href='{% url 'camp_detail' camp.pk %}'>
                 <div class="card">
                     Name: {{ camp.name }}
+                    <br>
                     Info: {{ camp.info }}
                 </div>
             </a>
             {% endfor %}
+            <div class="button-wrapper">
+                
+                <button class='profile-button'>
+                    <a href='{% url 'char_gen' %}'>
+                        New Character
+                    </a>
+                </button>
+                <br>
+                <button class='profile-button'>
+                    <a href='{% url 'camp_gen' %}'>
+                        New Campaign
+                    </a>
+                </button>
+            </div>
         </div>
 
         
-        
-    </div>
-    <div class="button-wrapper">
-        <h4>Create</h4>
-        <button class='button'>
-            <a href='{% url 'char_gen' %}'>
-                Character
-            </a>
-        </button>
-        <button class='button'>
-            <a href='{% url 'camp_gen' %}'>
-                Campaign
-            </a>
-        </button>
     </div>
     {% endblock %}

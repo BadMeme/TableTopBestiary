@@ -37,7 +37,6 @@ p {
 }
 
 .placeholder-container {
-    border: red solid;
     position: 40vh;
     height: 40vh;
     background-image: url(https://images.squarespace-cdn.com/content/v1/631c6296dbdc564c321c3e99/1662804657404-159D2297V91P7KBWA8MZ/white+gemoetric.png);
@@ -48,29 +47,70 @@ p {
 }
 
 .profile-container {
-    border: solid green;
-    position: 40%;
-    min-height: auto;
-    max-height: max-content;
+    /* border: solid green; */
+    height: 60%;
+    width: 100vw;
+    position: fixed;
+    bottom: 0
 }
+
+.charsheet-wrapper {
+    background-color: rgba(21, 7, 21, .3);
+    margin: 10px 10px 0px 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 40vh;
+    overflow-wrap: normal;
+
+}
+
+.skill-block {
+    position: absolute;
+    top: 8%;
+    right: 3%;
+    font-size: small;
+
+} td {
+    padding: 3px;
+    
+}
+
+
 .char-wrapper {
     float: left;
     padding: 5px;
-    border: solid blue;
+    /* border: solid blue; */
     width: 40vw;
-
+    height: 45vh;
+    overflow-y: scroll;
+    background-color: rgba(21, 7, 21, .3);
+    border-radius: 5px;
+    margin: 5px;
 }
 
 .camp-wrapper {
     padding: 5px;
     float: right;
-    border: solid blue;
+    /* border: solid blue; */
     width: 40vw;
+    height: 45vh;
+    overflow-y: scroll;
+    background-color: rgba(21, 7, 21, .3);
+    border-radius: 5px;
+    margin: 5px;
+    
 }
 
 .button-wrapper {
     padding: 5px;
-    border: solid greenyellow;
+    /* justify-self: start; */
+ 
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    /* border: solid greenyellow; */
+    
 }
 
 .card {
@@ -95,7 +135,16 @@ h4 {
     height: 40px;
     width: 70px;
     margin: 0px 0px 2px;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: small;
+    text-align: center;
+    
+}
+
+.charsheet-button {
+    height: 30px;
+    width: 70px;
+    
 }
 
 .login-button {
@@ -114,7 +163,7 @@ h4 {
 
 .edit-button {
     height: 40px;
-    width: 70px;
+    width: 75px;
     margin: 2px 0px;
     font-weight: 600;
 }
