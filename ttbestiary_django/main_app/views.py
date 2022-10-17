@@ -25,17 +25,10 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 #@method_decorator(login_required, name='dispatch')
-#---
 
-# Create your views here.
-
-# ----- Test Models
-
-
-# ----- End Test Models
+# -----
 
 # ----- Forms
-
 
 class CharForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -92,7 +85,7 @@ class Signup(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('profile') #this doesnt seem to work
+            return redirect('profile') 
         else:
             context = {'form': form}
             return render(request, 'registration/signup.html', context)
@@ -100,46 +93,49 @@ class Signup(View):
 
 class About(View):
     def get(self, request):
-        return HttpResponse('D&D Bestiary is a companion tool for the tabletop role-playing game Dungeons & Dragons (5e). It aims to store and organize your character sheets and campaign information in one place for ease of use with integrated game tools, like dice rolling and an initiative tracker.')
+        return HttpResponse('D&D Bestiary is a companion tool for the tabletop role-playing games. The coure functionality aims to automate and validate against complex TTRP rulesets and put players in touch with other players looking for games. Currently supporting the core rules of Dungeons & Dragons (5e). ttBestiary builds, validates, stores, and organizes your character sheets and campaign information in one place for ease of use with integrated game tools, like dice rolling and an initiative tracker.')
 
+@method_decorator(login_required, name='dispatch')
 class Profile(TemplateView):
     template_name = 'profile.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # if self.request.user == False :
-        #     return redirect('home')
-        # context['test'] = self.request.user.protochar.all()
         context['chars'] = ProtoChar.objects.all().filter(user = self.request.user.pk)
         context['camps'] = ProtoCamp.objects.all().filter(user = self.request.user.pk)
         
         return context
 
+@method_decorator(login_required, name='dispatch')
 class CharDetail(DetailView):
     model = ProtoChar
     template_name="char/char_sheet.html"
 
+@method_decorator(login_required, name='dispatch')
 class CampDetail(DetailView):
     model = ProtoCamp
     template_name="camp/camp_detail.html"
-    
-# class CampDetailTest(TemplateView):
-    
-#     template_name="camp/camp_detail.html"
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # if self.request.user == False :
-#         #     return redirect('home')
-#         # context['test'] = self.request.user.protochar.all()
-#         context['camp'] = ProtoCamp.objects.all().filter(id = kwargs['pk'])
-#         context['members'] = MemberList.objects.all().filter(campaign = kwargs['pk'])
-        
-#         return context
 
+@method_decorator(login_required, name='dispatch')
+class CampDetailTest(TemplateView):
+    
+    template_name="camp/camp_detail.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # if self.request.user == False :
+        #     return redirect('home')
+        # context['test'] = self.request.user.protochar.all()
+        context['camp'] = ProtoCamp.objects.all().filter(id = kwargs['pk'])
+        context['members'] = MemberList.objects.all().filter(campaign = kwargs['pk'])
+        
+        return context
+
+@method_decorator(login_required, name='dispatch')
 class SheetDetail(DetailView):
     model = ProtoSheet
     template_name = 'sheet/sheet_view.html'
 
 # character CRUD routes
+@method_decorator(login_required, name='dispatch')
 class CharCreate(CreateView):
     model = ProtoChar 
     form_class = CharForm
@@ -150,12 +146,14 @@ class CharCreate(CreateView):
     success_url = '/profile/'
     #figure out how to disable the user form field
 
+@method_decorator(login_required, name='dispatch')
 class CharUpdate(UpdateView):
     model = ProtoChar
     fields = ['name', 'img', 'bio']
     template_name = 'char/char_edit.html'
     success_url = '/profile/'
 
+@method_decorator(login_required, name='dispatch')
 class CharDelete(DeleteView):
     model = ProtoChar
     template_name = 'char/char_delete.html'
@@ -163,6 +161,7 @@ class CharDelete(DeleteView):
 
 
 # character sheet CRUD routes
+@method_decorator(login_required, name='dispatch')
 class SheetCreate(View):
     def get(self, request, *args, **kwargs):
         form = SheetForm(initial={
@@ -189,18 +188,19 @@ class SheetCreate(View):
         form = SheetForm(request.POST)
         if form.is_valid():
             sheet = form.save()
-            print(sheet)
             return redirect('char_sheet', kwargs['pk'])
         else:
             context = {'form': form}
             return render(request, 'sheet/sheet_gen.html', context)
 
+@method_decorator(login_required, name='dispatch')
 class SheetUpdate(UpdateView):
     model = ProtoSheet
     fields = '__all__'
     template_name = 'sheet/sheet_edit.html'
     success_url = '/profile/'
 
+@method_decorator(login_required, name='dispatch')
 class SheetDelete(DeleteView):
     model = ProtoSheet
     template_name = 'sheet/sheet_delete.html'
@@ -208,6 +208,7 @@ class SheetDelete(DeleteView):
 
 
 # campaign CRUD routes
+@method_decorator(login_required, name='dispatch')
 class CampCreate(CreateView):
     model = ProtoCamp 
     form_class = CampForm
@@ -217,12 +218,14 @@ class CampCreate(CreateView):
     template_name = 'camp/camp_gen.html'
     success_url = '/profile/'
 
+@method_decorator(login_required, name='dispatch')
 class CampUpdate(UpdateView):
     model = ProtoCamp 
     fields = ['name', 'info', 'img']
     template_name = 'camp/camp_edit.html'
     success_url = '/profile/'
 
+@method_decorator(login_required, name='dispatch')
 class CampDelete(DeleteView):
     model = ProtoCamp
     template_name = 'camp/camp_delete.html'
@@ -231,6 +234,7 @@ class CampDelete(DeleteView):
 
 ###
 
+@method_decorator(login_required, name='dispatch')
 class GameSearch(TemplateView):
     template_name = 'char/game_search.html'
     def get_context_data(self, **kwargs):
@@ -240,6 +244,7 @@ class GameSearch(TemplateView):
         
         return context
 
+@method_decorator(login_required, name='dispatch')
 class MemberRequest(TemplateView):
     template_name = 'char/request_create.html'
 
@@ -256,11 +261,12 @@ class MemberRequest(TemplateView):
         form = MemberRequestForm(request.POST)
         if form.is_valid():
             MemberRequest = form.save()
-            return redirect('char/char_sheet', kwargs['pk']) #this doesnt seem to work
+            return redirect('char/char_sheet', kwargs['pk'])
         else:
             context = {'form': form}
             return render(request, 'char/request_create.html', context)
 
+@method_decorator(login_required, name='dispatch')
 class MemberSearch(TemplateView):
     template_name = 'camp/member_search.html'
     def get_context_data(self, **kwargs):
@@ -270,6 +276,7 @@ class MemberSearch(TemplateView):
         
         return context
 
+@method_decorator(login_required, name='dispatch')
 class MemberRegister(TemplateView):
     template_name = 'camp/member_register.html'
     
@@ -286,7 +293,7 @@ class MemberRegister(TemplateView):
         form = MemberListForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('camp/camp_sheet', kwargs['pk']) #this doesnt seem to work
+            return redirect('camp/camp_sheet', kwargs['pk']) 
         else:
             context = {'form': form}
             return render(request, 'camp/member_register.html', context)

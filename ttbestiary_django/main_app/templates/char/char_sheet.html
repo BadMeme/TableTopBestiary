@@ -92,26 +92,25 @@
                     <td>{{protochar.protosheet.investigation}}</td>
                 </tr>
                 
-              </table>
-
-        
+            </table>
+        </div>
+        <br>
+    </div>
+        <div class="button-wrapper">
+            <button class="charsheet-button">
+                    <a href='{% url 'game_search' protochar.pk %}'>Join</a>
+            </button>
+            <button class="charsheet-button">
+                    <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit</a>
+            </button>
+            <button class="charsheet-button">
+                    <a href='{% url 'sheet_delete' protochar.protosheet.pk %}'>Delete</a>
+            </button>
             {% else %}
             <button class="charsheet-button">
                 <a href='{% url 'sheet_gen' protochar.pk %}'>Make Sheet</a>
             </button>
-        {% endif %}
-    </div>
-    <br>
-</div>
-    <div class="button-wrapper">
-        <button class="charsheet-button">
-                <a href='{% url 'game_search' protochar.pk %}'>Join</a>
-        </button>
-        <button class="charsheet-button">
-                <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit</a>
-        </button>
-        <button class="charsheet-button">
-                <a href='{% url 'sheet_delete' protochar.protosheet.pk %}'>Delete</a>
-        </button>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
