@@ -19,10 +19,10 @@
             <p>CHA: {{protochar.protosheet.cha_stat}}</p>
         </div>
         <button class="charsheet-button">
-            <a href='{% url 'sheet_view' protochar.pk protochar.protosheet.pk %}'>View Sheet</a>
+            <a href='{% url 'sheet_edit' protochar.protosheet.pk %}'>Edit Sheet</a>
         </button>
         <button class="charsheet-button">
-            <a href='{% url 'sheet_edit' protochar.pk protochar.protosheet.pk %}'>Edit Sheet</a>
+            <a href='{% url 'sheet_delete' protochar.protosheet.pk %}'>Delete Sheet</a>
         </button>
         {% else %}
         <button class="charsheet-button">

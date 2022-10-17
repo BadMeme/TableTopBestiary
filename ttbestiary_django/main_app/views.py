@@ -3,6 +3,7 @@
 
 from django import forms
 from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
 from django.forms import ModelForm
 from django.views import View #
 from django.views.generic import DetailView
@@ -36,25 +37,28 @@ from django.utils.decorators import method_decorator
 
 
 class CharForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CharForm, self).__init__(*args, **kwargs)
+        self.fields['user'].disabled = True
+    
     class Meta:
         model = ProtoChar
         fields = '__all__'
 
 class SheetForm(ModelForm):
+    
     class Meta:
         model = ProtoSheet
         fields = '__all__'
-    
-        # def __init__(self, *args, **kwargs):
-        #     super(SheetForm, self).__init__(*args, **kwargs)
-        #     self.fields['protochar'].disabled = True
-        # exclude = ['protochar']
-        # level = forms.CharField (label='level', max_length=2)
-        # race_code = forms.CharField (label='race_code', max_length=3)
-        # class_code = forms.CharField (label='class_code', max_length=3)
-        # subclass_code = forms.CharField (label='subclass_code', max_length=3)
-        # # !need place for foreign key probably 
 
+class CampForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CampForm, self).__init__(*args, **kwargs)
+        self.fields['user'].disabled = True
+
+    class Meta:
+        model = ProtoCamp
+        fields = '__all__'
 
 # -----
 
@@ -77,6 +81,59 @@ class Signup(View):
             context = {'form': form}
             return render(request, 'registration/signup.html', context)
 
+
+class About(View):
+    def get(self, request):
+        return HttpResponse('D&D Bestiary is a companion tool for the tabletop role-playing game Dungeons & Dragons (5e). It aims to store and organize your character sheets and campaign information in one place for ease of use with integrated game tools, like dice rolling and an initiative tracker.')
+
+class Profile(TemplateView):
+    template_name = 'profile.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # if self.request.user == False :
+        #     return redirect('home')
+        # context['test'] = self.request.user.protochar.all()
+        context['chars'] = ProtoChar.objects.all().filter(user = self.request.user.pk)
+        context['camps'] = ProtoCamp.objects.all().filter(user = self.request.user.pk)
+        
+        return context
+
+class CharDetail(DetailView):
+    model = ProtoChar
+    template_name="char/char_sheet.html"
+    
+class CampDetail(DetailView):
+    model = ProtoCamp
+    template_name="camp/camp_detail.html"
+
+class SheetDetail(DetailView):
+    model = ProtoSheet
+    template_name = 'sheet/sheet_view.html'
+
+# character CRUD routes
+class CharCreate(CreateView):
+    model = ProtoChar 
+    form_class = CharForm
+    def get_initial(self):
+        user = self.request.user.id
+        return { 'user' : user }
+    template_name = 'char/char_gen.html'
+    success_url = '/profile/'
+    #figure out how to disable the user form field
+
+class CharUpdate(UpdateView):
+    model = ProtoChar
+    fields = ['name', 'img', 'bio']
+    template_name = 'char/char_edit.html'
+    success_url = '/profile/'
+
+class CharDelete(DeleteView):
+    model = ProtoChar
+    template_name = 'char/char_delete.html'
+    success_url = '/profile/'
+
+
+# character sheet CRUD routes
 class SheetCreate(View):
     def get(self, request, *args, **kwargs):
         form = SheetForm(initial={
@@ -109,108 +166,6 @@ class SheetCreate(View):
             context = {'form': form}
             return render(request, 'sheet/sheet_gen.html', context)
 
-class About(View):
-    def get(self, request):
-        return HttpResponse('D&D Bestiary is a companion tool for the tabletop role-playing game Dungeons & Dragons (5e). It aims to store and organize your character sheets and campaign information in one place for ease of use with integrated game tools, like dice rolling and an initiative tracker.')
-
-class Profile(TemplateView):
-    template_name = 'profile.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # if self.request.user == False :
-        #     return redirect('home')
-        # context['test'] = self.request.user.protochar.all()
-        context['chars'] = ProtoChar.objects.all().filter(user = self.request.user.pk)
-        context['camps'] = ProtoCamp.objects.all().filter(user = self.request.user.pk)
-        
-        return context
-
-class CharDetail(DetailView):
-    model = ProtoChar
-    template_name="char/char_sheet.html"
-    
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['sheet']=self.request.
-    #     # ProtoSheet.objects.get(protochar = kwargs['pk'])
-    #     print(context['sheet'])
-    #     return context
-
-class CharProfile(TemplateView):
-    template_name='sheet/sheet_view.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['char'] = ProtoChar.Objects.all().filter(id = kwargs['pk'])
-        # context['sheet'] = ProtoSheet.get(protochar = self.request.protochar)
-    
-        print(context['char'])
-        # print(context['sheet'])
-        return context
-    
-    
-class CampDetail(DetailView):
-    model = ProtoCamp
-    template_name="camp/camp_detail.html"
-
-class SheetDetail(DetailView):
-    model = ProtoSheet
-    template_name = 'sheet/sheet_view.html'
-    def detail(request, pk, sheet_pk):
-        print(sheet_pk)
-        return 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     #
-    #     #
-    #     #
-    #     test = ProtoSheet.objects.get(protochar = kwargs['pk'])
-    #     print(test)
-    #     return context
-    # def get(self, request, *args, **kwargs):
-    #     # form = SheetForm(initial={'protochar': kwargs['pk']})
-    #     # form.fields['protochar'].disabled = True
-    #     context = ProtoSheet.objects.filter(protochar = kwargs['pk'])
-    #     return render(request, 'sheet/sheet_view.html', context)
-
-# character CRUD routes
-class CharCreate(CreateView):
-    model = ProtoChar 
-    form_class = CharForm
-    def get_initial(self):
-        user = self.request.user.id
-        return { 'user' : user }
-    template_name = 'char/char_gen.html'
-    success_url = '/profile/'
-    #figure out how to disable the user form field
-
-class CharUpdate(UpdateView):
-    model = ProtoChar
-    fields = ['name', 'img', 'bio']
-    template_name = 'char/char_edit.html'
-    success_url = '/profile/'
-
-class CharDelete(DeleteView):
-    model = ProtoChar
-    template_name = 'char/char_delete.html'
-    success_url = "/profile/"
-
-
-# character sheet CRUD routes
-# class SheetCreate(CreateView):
-#     model = ProtoSheet
-#     fields = '__all__'
-#     # def get_context_data(self, **kwargs):
-#     #     context = super().get_context_data(**kwargs)
-#     #     return context
-#     def get_initial(self, **kwargs):
-        
-#         protochar = self.kwargs['pk']
-#         return { 'protochar' : protochar }
-        
-#     template_name = 'sheet/sheet_gen.html'
-#     success_url = '/profile/'
-#     # will need to fix. complex series of read/write calls etc.
-
 class SheetUpdate(UpdateView):
     model = ProtoSheet
     fields = '__all__'
@@ -220,13 +175,13 @@ class SheetUpdate(UpdateView):
 class SheetDelete(DeleteView):
     model = ProtoSheet
     template_name = 'sheet/sheet_delete.html'
-    success_url = "/profile/"
+    success_url = '/profile/'
 
 
 # campaign CRUD routes
 class CampCreate(CreateView):
     model = ProtoCamp 
-    fields = ['user', 'name', 'info', 'img']
+    form_class = CampForm
     def get_initial(self):
         user = self.request.user.id
         return { 'user' : user }
@@ -243,6 +198,19 @@ class CampDelete(DeleteView):
     model = ProtoCamp
     template_name = 'camp/camp_delete.html'
     success_url = "/profile/"
+
+
+
+
+#### Future Refactoring Ahead
+
+
+
+
+
+
+
+
 
 #### Form Wizard Shit ###
 
@@ -372,59 +340,3 @@ class CharGenWizard(SessionWizardView):
         return render(self.request, 'home.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
-
-
-# Other bullshit
-class CharacterSheet(TemplateView):
-    template_name = 'render_char.html'
-    test_context = {
-        'info' : {
-            'name' : 'Test Character',
-            'level' : 1,
-            'pro' : 2
-        },
-        'race' : {
-            'name' : 'Test Race',
-        },
-        'class' : {
-            'classname' : 'Test Class',
-            'hd' : 10
-        },
-        'stats' : {
-            'str' : 15,
-            'dex' : 14,
-            'con' : 13,
-            'int' : 10,
-            'wis' : 12,
-            'cha' : 8
-        },
-        'stats_2' : {
-            'HP' : 11,
-            'AC' : 15,
-            'Initiative' : 2
-        },
-        'saves' : {
-            'str' : True,
-            'dex' : False,
-            'con' : True,
-            'int' : False,
-            'wis' : False,
-            'cha' : False
-        },
-        'skills' : {
-            'test_skill_1' : False,
-            'test_skill_2' : False,
-            'test_skill_3' : True,
-            'test_skill_4' : False,
-            'test_skill_5' : True,
-            'test_skill_6' : False,
-        }
-    }
-    def get_context_data(self, **kwargs):
-        # context = super().get_context_data(**kwargs)
-        #
-        #
-        #
-        context = self.test_context
-        # print(context['class']['classname'])
-        return context
