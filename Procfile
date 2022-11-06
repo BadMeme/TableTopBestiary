@@ -1,0 +1,1 @@
+web: gunicorn tt_bestiary_project.wsgi
