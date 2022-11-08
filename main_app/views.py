@@ -54,7 +54,7 @@ class CampForm(ModelForm):
 class MemberListForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(MemberListForm, self).__init__(*args, **kwargs)
-        self.fields['member'].disabled = True
+        # self.fields['member'].disabled = True
 
     class Meta:
         model = MemberList
@@ -126,7 +126,7 @@ class CampDetailTest(TemplateView):
         # context['test'] = self.request.user.protochar.all()
         context['camp'] = ProtoCamp.objects.all().filter(id = kwargs['pk'])
         context['members'] = MemberList.objects.all().filter(campaign = kwargs['pk'])
-        
+        print(context)
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -253,15 +253,15 @@ class MemberRequest(TemplateView):
             'character' : kwargs['pk'],
             'campaign' : kwargs['camp_pk'],
             })
-        form.fields['character'].disabled = True
+        # form.fields['character'].disabled = True
         context = {'form': form}
         return render(request, 'char/request_create.html', context)
 
     def post(self, request, *args, **kwargs):
         form = MemberRequestForm(request.POST)
         if form.is_valid():
-            MemberRequest = form.save()
-            return redirect('char/char_sheet', kwargs['pk'])
+            form.save()
+            return redirect('char_sheet', kwargs['pk'])
         else:
             context = {'form': form}
             return render(request, 'char/request_create.html', context)
@@ -285,15 +285,18 @@ class MemberRegister(TemplateView):
             'campaign' : kwargs['pk'],
             'member' : kwargs['char_pk'],
             })
-        form.fields['campaign'].disabled = True
+        # form.fields['campaign'].disabled = True
         context = {'form': form}
         return render(request, 'camp/member_register.html', context)
 
     def post(self, request, *args, **kwargs):
+        # request.POST._mutable = True
+        # request.POST['campaign'] = kwargs['pk']
+        # request.POST['member'] = kwargs['char_pk']
         form = MemberListForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('camp/camp_sheet', kwargs['pk']) 
+            return redirect('camp_detail', kwargs['pk']) 
         else:
             context = {'form': form}
             return render(request, 'camp/member_register.html', context)

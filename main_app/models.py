@@ -128,7 +128,7 @@ class ProtoCamp(models.Model):
 
 class MemberList(models.Model):
     campaign = models.ForeignKey(ProtoCamp, on_delete=models.CASCADE, related_name='registry')
-    member = models.ForeignKey(ProtoChar, on_delete=models.CASCADE, related_name='member')
+    member = models.OneToOneField(ProtoChar, on_delete=models.CASCADE, related_name='member')
 
 class MemberRequest(models.Model):
     character = models.OneToOneField(ProtoChar, on_delete=models.CASCADE, related_name='request')

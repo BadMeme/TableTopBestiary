@@ -3,8 +3,8 @@
 {% block content %}
     <div class="placeholder-container">
         <div class="charsheet-wrapper">
-            <p>Name: {{camp.name}}</p>
-            <p>Info: {{camp.info}}</p>
+            <p>Name: {{protocamp.name}}</p>
+            <p>Info: {{protocamp.info}}</p>
         </div>
         {% for member in members %}
             <div class="card">
@@ -18,7 +18,7 @@
     <br>
     <div class="button-wrapper">
         <button class='profile-button'>
-            <a href='{% url 'member_search' context.camp.pk %}'>
+            <a href='{% url 'member_search' protocamp.pk %}'>
                 Find Members
             </a>
         </button>
